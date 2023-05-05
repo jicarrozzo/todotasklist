@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>Task</h1>
+<form #taskForm="ngForm" (ngSubmit)="confirm(taskForm)">
+  <div mat-dialog-content>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput type="text" ngModel name="title" required>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Priority</mat-label>
+        <mat-select ngModel name="priority" required>
+          <mat-option value="low">Low</mat-option>
+          <mat-option value="medium">Medium</mat-option>
+          <mat-option value="high">High</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea matInput ngModel name="description" rows="2"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-stroked-button [disabled]="taskForm.invalid" color="primary">
+      <mat-icon>check</mat-icon>
+      Confirm
+    </button>
+    <button mat-button mat-dialog-close cdkFocusInitial color="warn">Cancel</button>
+  </div>
+</form>

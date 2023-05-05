@@ -1,0 +1,55 @@
+mat-card {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px;
+  background: none;
+  border: 1px solid black;
+  box-shadow: none !important;
+}
+
+.priority {
+  width: 10%;
+  min-width: 30px;
+
+  .low {
+    color: green;
+  }
+
+  .medium {
+    color: orange;
+  }
+
+  .high {
+    color: red;
+  }
+}
+
+.data {
+  width: 70%;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.description {
+  font-size: 16px;
+}
+
+.date {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.done {
+  opacity: 0.5;
+
+  .title,
+  .description {
+    text-decoration: line-through;
+  }
+}

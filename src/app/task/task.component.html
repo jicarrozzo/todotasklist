@@ -1,0 +1,21 @@
+<mat-card [class.done]="task.done">
+  <div class="priority">
+    <mat-icon [class]="task.priority">circle</mat-icon>
+  </div>
+  <div class="data">
+    <div class="title">{{task.title | titlecase}}</div>
+    <div class="date">{{ task.date | date:'short'}}</div>
+    <div class="description">{{task.description | slice:0:30}}</div>
+  </div>
+  <div class="operations">
+    <button mat-icon-button (click)="done()">
+      <mat-icon>{{task.done?'task_alt':'radio_button_unchecked'}}</mat-icon>
+    </button>
+    <button mat-icon-button (click)="edit()" [disabled]="task.done">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button (click)="remove()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</mat-card>
