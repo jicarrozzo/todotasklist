@@ -46,7 +46,10 @@ mat-card {
 }
 
 .done {
-  opacity: 0.5;
+
+  .data {
+    opacity: 0.5;
+  }
 
   .title,
   .description {

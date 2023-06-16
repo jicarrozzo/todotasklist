@@ -1,4 +1,45 @@
-<mat-toolbar>
+<ng-container *ngIf="(tasklist$ |async) as tasklist">
+  <mat-toolbar>
+    <span>My Tasks ({{tasklist.length}})</span>
+    <span class="spacer"></span>
+
+    <button mat-button (click)="sort('priority')" matTooltip="Order by priority">
+      <mat-icon>sort</mat-icon>
+      Priority
+    </button>
+    <button mat-button (click)="sort('date')" matTooltip="Order by date">
+      <mat-icon>sort</mat-icon>
+      Date
+    </button>
+    <button mat-button matTooltip="Mark all as done" (click)="checkall()">
+      <mat-icon>fact_check</mat-icon>
+    </button>
+    <button mat-button matTooltip="Show only undone tasks" (click)="showall()">
+      <mat-icon>{{ showonlyundone?'visibility_off':'visibility'}}</mat-icon>
+    </button>
+    <button mat-button matTooltip="Deletes all tasks" (click)="removeall()">
+      <mat-icon>delete_sweep</mat-icon>
+    </button>
+
+    <button mat-stroked-button (click)="add()" color="primary" matTooltip="Add a new Task">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div class="results" *ngFor="let item of tasklist; let i=index">
+    <ng-container *ngIf="!showonlyundone || showonlyundone && !item.done">
+      <app-task [task]="item" (onDone)="done(i, $event)" (onEdit)="edit(i, $event)" (onRemove)="remove(i)">
+      </app-task>
+    </ng-container>
+  </div>
+
+  <ng-container *ngIf="tasklist.length ===0">
+    <mat-card>
+      <h2>No tasks found</h2>
+    </mat-card>
+  </ng-container>
+</ng-container>
+
+<!-- <mat-toolbar>
   <span>My Tasks ({{this.tasklist.length}})</span>
   <span class="spacer"></span>
 
@@ -35,4 +76,4 @@
   <mat-card>
     <h2>No tasks found</h2>
   </mat-card>
-</ng-container>
+</ng-container> -->

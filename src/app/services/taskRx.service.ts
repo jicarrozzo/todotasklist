@@ -1,52 +1,65 @@
 // build a services to maange the tasks
 import { Injectable } from '@angular/core';
 import { Task } from '../models/task.model';
+import { BehaviorSubject } from 'rxjs';
 import { _tasklistMock } from 'src/assets/mocks/tasks.mock';
 
 /** Service to manage the tasks. */
 @Injectable({
   providedIn: 'root'
 })
-export class TaskService {
+export class TaskRxService {
   /** The order to sort by. */
   sortOrder: 'asc' | 'desc' = 'asc';
 
-  /** The tasklist to display. */
-  tasklist = _tasklistMock;
+  private _tasklist = _tasklistMock;
+  /** Local tasklist to display. */
+  private tasklist = new BehaviorSubject(this._tasklist);
+  /** Public tasklist to display. */
+  tasklist$ = this.tasklist.asObservable();
 
   constructor() { }
 
+  /** emits the next value of the tasklist. */
+  _update() {
+    this.tasklist.next(this._tasklist);
+  }
+
   /** Adds a new task to the tasklist. */
   add(task: Task) {
-    this.tasklist.push(task);
+    this._tasklist.push(task);
+    this._update();
   }
 
   /** Sets the task as done. */
   done(index: number, task: Task) {
-    this.tasklist[index].done = !task.done;
+    this._tasklist[index].done = !task.done;
+    this._update();
   }
 
   /** edits the task. */
   edit(index: number, task: Task) {
-    this.tasklist.splice(index, 1, task);
+    this._tasklist.splice(index, 1, task);
+    this._update();
   }
   /** removes the task. */
   remove(index: number) {
-    this.tasklist.splice(index, 1);
+    this._tasklist.splice(index, 1);
+    this._update();
   }
   /** removes all the tasks. */
   removeall(onlydone: boolean = true) {
     if (onlydone)
-      this.tasklist = this.tasklist.filter(task => !task.done);
+      this._tasklist = this._tasklist.filter(task => !task.done);
     else
-      this.tasklist = [];
+      this._tasklist = [];
 
-    return this.tasklist;
+    this._update();
   }
 
   /** sorts the by a property */
   sort(sortBy: keyof Task) {
-    this.tasklist.sort((a, b) => {
+    this._tasklist.sort((a, b) => {
       if (a[sortBy] > b[sortBy]) {
         return this.sortOrder === 'asc' ? 1 : -1;
       }
@@ -61,7 +74,7 @@ export class TaskService {
 
   /** sets all the tasks as done */
   checkall() {
-    //return this.tasklist.map(task => ({ ...task, done: true }));
-    this.tasklist.forEach(task => task.done = true);
+    this._tasklist.forEach(task => task.done = true);
+    this._update();
   }
 }

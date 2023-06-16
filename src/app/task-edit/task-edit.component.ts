@@ -1,10 +1,7 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { EditTaskData, Task } from '../models/task.model';
+import { EditTaskData } from '../models/task.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TaskService } from '../services/task.service';
-
-
 
 @Component({
   selector: 'app-task-edit',
@@ -16,15 +13,11 @@ export class TaskEditComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<TaskEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: EditTaskData,
-    private taskService: TaskService) {
-    // console.log(data);
+    @Inject(MAT_DIALOG_DATA) public data: EditTaskData) { }
 
-  }
-
+  /** Initializes the component. */
   ngOnInit(): void {
     if (this.data.task) {
-      // console.log(this.data.task);
       const values = {
         title: this.data.task.title,
         description: this.data.task.description,
@@ -40,23 +33,11 @@ export class TaskEditComponent implements OnInit {
   confirm(form: NgForm) {
     const { title, description, priority } = form.value;
 
-    if (!this.data.task)
-      this.taskService.add({
-        title,
-        description,
-        done: false,
-        date: new Date(),
-        priority
-      } as Task);
-    else
-      this.taskService.edit(this.data.index!, {
-        ...this.data.task!,
-        title,
-        description,
-        priority
-      });
-
-    this.dialogRef.close();
+    this.dialogRef.close({
+      title,
+      description,
+      priority
+    });
   }
 
 }
